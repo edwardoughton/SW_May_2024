@@ -14,12 +14,12 @@ dir.create(folder_figs, showWarnings = FALSE)
 ### long-term pre-event
 ##################
 # Set default folder
-data <- read.csv(file.path(dir, filename))
+data <- read.csv(file.path(dir, 'data', 'survey_responses', filename))
 
 ##tells us the structure, including column names
 str(data)
 
-max_value = 14
+max_value = 16
 
 # subset columns we want
 data <- data %>% select(
@@ -45,7 +45,7 @@ data_long <- data %>%
                values_to = "Response_Value")
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 colnames(data)[colnames(data) == "survey.section..How.many.employees.does.your.organization.have."] <- "employees"
 colnames(data)[colnames(data) == "survey.section..How.many.customers.does.your.organization.have."] <- "customers"
@@ -148,14 +148,23 @@ labels <- summarised_data %>%
   summarise(group_sum = sum(Response_Value, na.rm = TRUE)) %>%
   ungroup()
 
+original_levels <- c("<250","250-1,000","1,000-5,000","5,000-10,000",">10,000")#, "Not Disclosed")
+summarised_data$employees <- factor(summarised_data$employees, levels = rev(original_levels))
+summarised_data = summarised_data[complete.cases(summarised_data),]
+
 # Plot data
 plot1 = ggplot(summarised_data, aes(x = Response_Type, y = Response_Value)) +
   geom_bar(aes(fill = employees), stat = "identity") + 
   geom_text(data = labels, aes(x = Response_Type, y = group_sum, label = group_sum), 
             vjust = .4, hjust = -1, size = 4)+ 
   coord_flip() +
+  guides(fill = guide_legend(nrow = 1, ncol = 10, reverse = TRUE)) +
   theme_minimal() +
-  theme(legend.position = 'bottom') +
+  theme(
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.box.just = "center"
+  ) +
   labs(colour=NULL,
        title = "Power: Long-Term Pre-Event Decisions Taken",
        subtitle = "Decisions taken before a space weather forecast has been issued.",
@@ -173,7 +182,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 
 # load in data
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 ##inspect data structure, including column names
 str(data)
@@ -201,7 +210,7 @@ data_long <- data %>%
                names_to = "Response_Type",
                values_to = "Response_Value")
 
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 colnames(data)[colnames(data) == "survey.section..How.many.employees.does.your.organization.have."] <- "employees"
 colnames(data)[colnames(data) == "survey.section..How.many.customers.does.your.organization.have."] <- "customers"
@@ -300,7 +309,9 @@ labels <- summarised_data %>%
   summarise(group_sum = sum(Response_Value, na.rm = TRUE)) %>%
   ungroup()
 
-# max_value =max(summarised_data$Response_Value)
+original_levels <- c("<250","250-1,000","1,000-5,000","5,000-10,000",">10,000")#, "Not Disclosed")
+summarised_data$employees <- factor(summarised_data$employees, levels = rev(original_levels))
+summarised_data = summarised_data[complete.cases(summarised_data),]
 
 # plot data
 plot2 = ggplot(summarised_data, 
@@ -309,8 +320,13 @@ plot2 = ggplot(summarised_data,
   geom_text(data = labels, aes(x = Response_Type, y = group_sum, label = group_sum), 
           vjust = .4, hjust = -1, size = 4)+ 
   coord_flip() +
+  guides(fill = guide_legend(nrow = 1, ncol = 10, reverse = TRUE)) + 
   theme_minimal() +
-  theme(legend.position = 'bottom') +
+  theme(
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.box.just = "center"
+  ) +
   labs(colour=NULL,
        title = "Power: Short-Term Pre-Event Decisions Taken",
        subtitle = "Decisions taken once a space weather forecast has been issued.",
@@ -327,7 +343,7 @@ plot2 = ggplot(summarised_data,
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 ##tells us the structure, including column names
 str(data)
@@ -358,7 +374,7 @@ data_long <- data %>%
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 colnames(data)[colnames(data) == "survey.section..How.many.employees.does.your.organization.have."] <- "employees"
 colnames(data)[colnames(data) == "survey.section..How.many.customers.does.your.organization.have."] <- "customers"
@@ -366,7 +382,6 @@ colnames(data)[colnames(data) == "survey.section..Approximately..how.many.Megawa
 colnames(data)[colnames(data) == "survey.section..Approximately..what.is.your.peak.load.in.Megawatt..MW.."] <- "peak_load_mw"
 colnames(data)[colnames(data) == "survey.section..What.is.the.highest.AC.voltage.in.your.system."] <- "highest_ac_voltage"
 colnames(data)[colnames(data) == "survey.section..Which.region.do.you.operate.in."] <- "region"
-
 
 str(data)
 
@@ -487,7 +502,7 @@ plot3 = ggplot(summarised_data,
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 ##tells us the structure, including column names
 str(data)
@@ -517,7 +532,7 @@ data_long <- data %>%
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-data <- read.csv(file.path(folder, filename))
+data <- read.csv(file.path(folder, 'data', 'survey_responses', filename))
 
 colnames(data)[colnames(data) == "survey.section..How.many.employees.does.your.organization.have."] <- "employees"
 colnames(data)[colnames(data) == "survey.section..How.many.customers.does.your.organization.have."] <- "customers"
@@ -618,6 +633,10 @@ labels <- summarised_data %>%
   summarise(group_sum = sum(Response_Value, na.rm = TRUE)) %>%
   ungroup()
 
+original_levels <- c("<250","250-1,000","1,000-5,000","5,000-10,000",">10,000")#, "Not Disclosed")
+summarised_data$employees <- factor(summarised_data$employees, levels = rev(original_levels))
+summarised_data = summarised_data[complete.cases(summarised_data),]
+
 # plot data
 plot4 =
   ggplot(summarised_data, 
@@ -626,8 +645,13 @@ plot4 =
   geom_text(data = labels, aes(x = Response_Type, y = group_sum, label = group_sum), 
             vjust = .4, hjust = -1, size = 4)+ 
   coord_flip() +
+  guides(fill = guide_legend(nrow = 1, ncol = 10, reverse = TRUE)) + 
   theme_minimal() +
-  theme(legend.position = 'bottom') +
+  theme(
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.box.just = "center"
+  ) +
   labs(colour=NULL,
        title = "Power: Post-Event Decisions Taken",
        subtitle = "Decisions taken after the event has ceased.",
@@ -791,7 +815,7 @@ ggsave(
   'power_1_long_term.png',
   plot = plot1,
   device = "png",
-  path=folder,
+  path=folder_figs,
   units = c("in"),
   width = 8,
   height = 6,
