@@ -55,7 +55,7 @@ This grant is co-funded by the GEO/AGS Space Weather Research program and the EN
 
 ## Contact
 
-For more information, please contact [Edward Oughton](https://github.com/edwardoughton) (eoughton [ at ] gmu [ dot ] com).
+For more information, please contact [Edward Oughton](https://github.com/edwardoughton) (eoughton [ at ] gmu [ dot ] edu).
 
 ## Contributors
 - Edward Oughton - Primary Investigator
